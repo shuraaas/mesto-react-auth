@@ -1,0 +1,6 @@
+.popup__register {
+  width: 120px;
+  height: 120px;
+  display: block;
+  background: url('../../../images/popup-success.svg') no-repeat center;
+}

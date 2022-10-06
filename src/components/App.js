@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
+import Login from './Login';
+import Register from './Register';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddCardPopup from './AddCardPopup';
+import InfoTooltip from './InfoTooltip';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
@@ -15,6 +18,7 @@ const App = () => {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setisInfoTooltipPopupOpen] = useState(true);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -50,6 +54,7 @@ const App = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setisInfoTooltipPopupOpen(false);
     setSelectedCard(null);
   };
 
@@ -114,7 +119,9 @@ const App = () => {
               cards={cards}
             />
           </Route>
-          <Footer />
+          {/* <Login /> */}
+          {/* <Register /> */}
+          {/* <Footer /> */}
         </div>
 
         <ImagePopup
@@ -136,11 +143,17 @@ const App = () => {
           onClose={closeAllPopups}
           onAddCard={handleAddCardSubmit}
         />
-        <PopupWithForm
+        {/* <PopupWithForm
           title="Вы уверены?"
           name="delete-card"
           buttonText="Да"
           isOpen=""
+          onClose={closeAllPopups}
+        /> */}
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          name="info-tooltip"
+          title="Вы успешно зарегистрировались!"
           onClose={closeAllPopups}
         />
 
