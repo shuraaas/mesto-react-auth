@@ -23,6 +23,9 @@ const App = () => {
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState({
+    email: ''
+  });
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -38,7 +41,9 @@ const App = () => {
         setCards(cards);
       })
       .catch(err => console.error(err));
-  }, [promiseUserInfo, promiseInitialCards]);
+
+    tokenCheck();
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -122,12 +127,28 @@ const App = () => {
 
         localStorage.setItem('token', data.token);
         setLoggedIn(true);
-        // setUserData({
-        //   username: data.user.username,
-        //   email: data.user.email
-        // })
         history.push('/cards');
       });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+    history.push('/sign-in');
+  }
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem('token');
+
+    if (!jwt) return;
+
+    mestoAuth.getContent(jwt).then((data) => {
+      setLoggedIn(true);
+      setUserEmail({
+        email: data.email
+      });
+      history.push("/cards");
+    });
   };
 
   return (
