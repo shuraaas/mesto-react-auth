@@ -1,33 +1,56 @@
 import React, { useState } from 'react';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [state, setState] = useState({
-    username: '',
-    password: ''
+    email: '',
+    password: '',
+    message: ''
   })
 
-  const handleChangeUserName = () => {
-
+  const handleChangeUserEmail = (e) => {
+    setState({
+      ...state,
+      email: e.target.value
+    })
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = (e) => {
+    setState({
+      ...state,
+      password: e.target.value
+    })
+  };
 
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { email, password } = state;
+
+    if (!email || !password) return;
+
+    onLogin(email, password)
+      .catch(err => {
+        console.log(err);
+        setState({
+          ...state,
+          message: 'Что-то пошло не так!'
+        })
+      });
+  };
 
   return (
-    <div className="login">
+    <div onSubmit={handleSubmit} className="login">
       <h2 className="login__description">Вход</h2>
       <form className="form login__form">
 
         <fieldset className="form__content">
           <label className="form__field">
             <input
-              id="username"
+              // id="username"
               className="form__input form__input_type_login"
-              name="username"
+              name="email"
               type="text"
-              value={state.username}
-              onChange={handleChangeUserName}
+              value={state.email}
+              onChange={handleChangeUserEmail}
               placeholder="Email"
               required
             />
@@ -35,7 +58,7 @@ const Login = () => {
           </label>
           <label className="form__field">
             <input
-              id="password"
+              // id="password"
               className="form__input form__input_type_login"
               name="password"
               type="password"

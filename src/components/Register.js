@@ -1,34 +1,56 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Register = () => {
+const Register = ({ onRegister }) => {
   const [state, setState] = useState({
-    username: '',
-    password: ''
-  })
+    email: '',
+    password: '',
+    message: ''
+  });
 
-  const handleChangeUserName = () => {
-
+  const handleChangeUserEmail = (e) => {
+    setState({
+      ...state,
+      email: e.target.value
+    })
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = (e) => {
+    setState({
+      ...state,
+      password: e.target.value
+    })
+  };
 
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const { email, password } = state;
+
+    onRegister(email, password)
+      .catch(err => {
+        console.log(err);
+        setState({
+          ...state,
+          message: 'Что-то пошло не так!'
+        })
+      });
+  };
 
   return (
     <div className="login">
       <h2 className="login__description">Регистрация</h2>
-      <form className="form login__form">
+      <form onSubmit={handleSubmit} className="form login__form">
 
         <fieldset className="form__content">
           <label className="form__field">
             <input
               // id="username"
               className="form__input form__input_type_login"
-              name="username"
+              name="email"
               type="text"
-              value={state.username}
-              onChange={handleChangeUserName}
+              value={state.email}
+              onChange={handleChangeUserEmail}
               placeholder="Email"
               required
             />
@@ -51,8 +73,8 @@ const Register = () => {
 
         <button type="submit" className="btn btn_type_save btn_type_login">Зарегистрироваться</button>
       </form>
-      <p className="login__nav">Уже зарегистрированы? <Link className="login__link" to="/login">Войти</Link></p>
-      <Link ></Link>
+      <p className="login__nav">Уже зарегистрированы?</p>
+      <Link to="/sign-in" className="login__link">Войти</Link>
     </div>
   );
 };

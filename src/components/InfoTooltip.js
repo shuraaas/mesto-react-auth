@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import PopupWithForm from './PopupWithForm';
+import React from 'react';
+// import PopupWithForm from './PopupWithForm';
 
 const InfoTooltip = ({ isOpen, name, title, onClose, onUpdateAvatar }) => {
   // const inputRef = useRef();
@@ -39,11 +39,11 @@ const InfoTooltip = ({ isOpen, name, title, onClose, onUpdateAvatar }) => {
     // </PopupWithForm>
 
     <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
-      <div className="popup__container">
+      <div className="popup__container popup__container_type_info-tooltip">
         <button className="btn btn_type_close" type="button" onClick={onClose}></button>
+        <div className="popup__register"></div>
         <h2 className="popup__description">{title}</h2>
         {/* {children} */}
-        <div className="popup__register"></div>
       </div>
     </div>
   );

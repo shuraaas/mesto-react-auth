@@ -9,19 +9,25 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddCardPopup from './AddCardPopup';
 import InfoTooltip from './InfoTooltip';
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import ProtectedRoute from './ProtectedRoute';
 import api from '../utils/api';
+import * as mestoAuth from '../mestoAuth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 const App = () => {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [isInfoTooltipPopupOpen, setisInfoTooltipPopupOpen] = useState(true);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const history = useHistory();
+  // Промисы
   const promiseUserInfo = api.getUserInfo();
   const promiseInitialCards = api.getInitialCards();
 
@@ -32,7 +38,7 @@ const App = () => {
         setCards(cards);
       })
       .catch(err => console.error(err));
-  }, []);
+  }, [promiseUserInfo, promiseInitialCards]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -54,7 +60,7 @@ const App = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setisInfoTooltipPopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
     setSelectedCard(null);
   };
 
@@ -103,25 +109,55 @@ const App = () => {
       .catch(err => console.error(err));
   };
 
+  const handleRegister = (email, password) => {
+    return mestoAuth.register(email, password).then(() => {
+      history.push('/sign-in');
+    });
+  };
+
+  const handleLogin = (email, password) => {
+    return mestoAuth.authorize(email, password)
+      .then((data) => {
+        if (!data.token) throw new Error('Missing token');
+
+        localStorage.setItem('token', data.token);
+        setLoggedIn(true);
+        // setUserData({
+        //   username: data.user.username,
+        //   email: data.user.email
+        // })
+        history.push('/cards');
+      });
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
           <Header />
-          <Route path="/">
-            <Main
-              onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              cards={cards}
-            />
-          </Route>
-          {/* <Login /> */}
-          {/* <Register /> */}
-          {/* <Footer /> */}
+          <Switch>
+            <ProtectedRoute path="/cards" loggedIn={loggedIn}>
+              <Main
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  cards={cards}
+                />
+                <Footer />
+            </ProtectedRoute>
+            <Route path="/sign-up">
+              <Register onRegister={handleRegister} />
+            </Route>
+            <Route path="/sign-in">
+              <Login onLogin={handleLogin} />
+            </Route>
+            <Route>
+              {loggedIn ? <Redirect to="/cards" /> : <Redirect to="/sign-in" />}
+            </Route>
+          </Switch>
         </div>
 
         <ImagePopup
