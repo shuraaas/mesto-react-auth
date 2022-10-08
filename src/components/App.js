@@ -12,7 +12,7 @@ import InfoTooltip from './InfoTooltip';
 import ImagePopup from './ImagePopup';
 import ProtectedRoute from './ProtectedRoute';
 import api from '../utils/api';
-import * as mestoAuth from '../mestoAuth';
+import * as auth from '../utils/auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 const App = () => {
@@ -23,9 +23,7 @@ const App = () => {
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
-  const [userEmail, setUserEmail] = useState({
-    email: ''
-  });
+  const [userEmail, setUserEmail] = useState('');
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -115,18 +113,19 @@ const App = () => {
   };
 
   const handleRegister = (email, password) => {
-    return mestoAuth.register(email, password).then(() => {
+    return auth.register(email, password).then(() => {
       history.push('/sign-in');
     });
   };
 
   const handleLogin = (email, password) => {
-    return mestoAuth.authorize(email, password)
+    return auth.authorize(email, password)
       .then((data) => {
         if (!data.token) throw new Error('Missing token');
 
         localStorage.setItem('token', data.token);
         setLoggedIn(true);
+        setUserEmail(email);
         history.push('/cards');
       });
   };
@@ -142,11 +141,9 @@ const App = () => {
 
     if (!jwt) return;
 
-    mestoAuth.getContent(jwt).then((data) => {
+    auth.getContent(jwt).then((data) => {
       setLoggedIn(true);
-      setUserEmail({
-        email: data.email
-      });
+      setUserEmail(data.data.email);
       history.push("/cards");
     });
   };
@@ -155,7 +152,11 @@ const App = () => {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header />
+          <Header
+            loggedIn={loggedIn}
+            userEmail={userEmail}
+            onLogout={handleLogout}
+          />
           <Switch>
             <ProtectedRoute path="/cards" loggedIn={loggedIn}>
               <Main

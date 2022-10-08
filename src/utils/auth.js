@@ -22,9 +22,6 @@ const request = ({
 }
 
 export const register = (email, password) => {
-  // console.log(email)
-  // console.log(password)
-
   return request({
     url: '/signup',
     data: {email, password}
