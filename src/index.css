@@ -10,7 +10,7 @@
 @import url(./blocks/btn/_type/btn_type_close.css);
 @import url(./blocks/btn/_type/btn_type_save.css);
 @import url(./blocks/btn/_type/btn_type_delete.css);
-@import url(./blocks/btn/_type/btn_type_login.css);
+@import url(./blocks/btn/_type/btn_type_auth.css);
 @import url(./blocks/btn/_inactive/btn_inactive.css);
 @import url(./blocks/btn/_hidden/btn_hidden.css);
 
@@ -58,15 +58,16 @@
 @import url(./blocks/form/form.css);
 @import url(./blocks/form/_type/form_type_confirm.css);
 @import url(./blocks/form/__content/form__content.css);
-@import url(./blocks/form/__content/_type/form__content_type_login.css);
+@import url(./blocks/form/__content/_type/form__content_type_auth.css);
 @import url(./blocks/form/__field/form__field.css);
 @import url(./blocks/form/__input/form__input.css);
 @import url(./blocks/form/__input/_type/form__input_type_error.css);
-@import url(./blocks/form/__input/_type/form__input_type_login.css);
+@import url(./blocks/form/__input/_type/form__input_type_auth.css);
 @import url(./blocks/form/__input-error/form__input-error.css);
 @import url(./blocks/form/__input-error/_active/form__input-error_active.css);
 
-@import url(./blocks/login/login.css);
-@import url(./blocks/login/__description/login__description.css);
-@import url(./blocks/login/__nav/login__nav.css);
-@import url(./blocks/login/__link/login__link.css);
+@import url(./blocks/auth/auth.css);
+@import url(./blocks/auth/__description/auth__description.css);
+@import url(./blocks/auth/__signin/auth__signin.css);
+@import url(./blocks/auth/__login/auth__login.css);
+@import url(./blocks/auth/__login-link/auth__login-link.css);

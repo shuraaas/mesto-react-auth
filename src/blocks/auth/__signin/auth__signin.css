@@ -1,0 +1,11 @@
+.auth__signin {
+  padding-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.94px;
+  color: #fff;
+}

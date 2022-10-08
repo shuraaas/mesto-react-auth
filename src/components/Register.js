@@ -38,15 +38,13 @@ const Register = ({ onRegister }) => {
   };
 
   return (
-    <div className="login">
-      <h2 className="login__description">Регистрация</h2>
-      <form onSubmit={handleSubmit} className="form login__form">
-
-        <fieldset className="form__content">
+    <section onSubmit={handleSubmit} className="auth">
+      <h2 className="auth__description">Регистрация</h2>
+      <form className="form register__form">
+        <fieldset className="form__content form__content_type_auth">
           <label className="form__field">
             <input
-              // id="username"
-              className="form__input form__input_type_login"
+              className="form__input form__input_type_auth"
               name="email"
               type="text"
               value={state.email}
@@ -58,8 +56,7 @@ const Register = ({ onRegister }) => {
           </label>
           <label className="form__field">
             <input
-              // id="password"
-              className="form__input form__input_type_login"
+              className="form__input form__input_type_auth"
               name="password"
               type="password"
               value={state.password}
@@ -70,12 +67,15 @@ const Register = ({ onRegister }) => {
             {/* <span className="form__input-error job-input-error"></span> */}
           </label>
         </fieldset>
-
-        <button type="submit" className="btn btn_type_save btn_type_login">Зарегистрироваться</button>
+        <button type="submit" className="btn btn_type_save btn_type_auth">Зарегистрироваться</button>
       </form>
-      <p className="login__nav">Уже зарегистрированы?</p>
-      <Link to="/sign-in" className="login__link">Войти</Link>
-    </div>
+
+      <div className="auth__signin">
+        <p className='auth__login'>Уже зарегистрированы?</p>
+        <Link to="/sign-in" className="auth__login-link">Войти</Link>
+      </div>
+
+    </section>
   );
 };
 

@@ -38,13 +38,13 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <section onSubmit={handleSubmit} className="login">
-      <h2 className="login__description">Вход</h2>
+    <section onSubmit={handleSubmit} className="auth">
+      <h2 className="auth__description">Вход</h2>
       <form className="form login__form">
-        <fieldset className="form__content form__content_type_login">
+        <fieldset className="form__content form__content_type_auth">
           <label className="form__field">
             <input
-              className="form__input form__input_type_login"
+              className="form__input form__input_type_auth"
               name="email"
               type="text"
               value={state.email}
@@ -56,7 +56,7 @@ const Login = ({ onLogin }) => {
           </label>
           <label className="form__field">
             <input
-              className="form__input form__input_type_login"
+              className="form__input form__input_type_auth"
               name="password"
               type="password"
               value={state.password}
@@ -67,7 +67,7 @@ const Login = ({ onLogin }) => {
             {/* <span className="form__input-error job-input-error"></span> */}
           </label>
         </fieldset>
-        <button type="submit" className="btn btn_type_save btn_type_login">Войти</button>
+        <button type="submit" className="btn btn_type_save btn_type_auth">Войти</button>
       </form>
     </section>
   );
