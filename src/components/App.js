@@ -11,6 +11,7 @@ import AddCardPopup from './AddCardPopup';
 import InfoTooltip from './InfoTooltip';
 import ImagePopup from './ImagePopup';
 import ProtectedRoute from './ProtectedRoute';
+import NavBar from './NavBar';
 import api from '../utils/api';
 import * as auth from '../utils/auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -152,13 +153,15 @@ const App = () => {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header
-            loggedIn={loggedIn}
-            userEmail={userEmail}
-            onLogout={handleLogout}
-          />
           <Switch>
             <ProtectedRoute path="/cards" loggedIn={loggedIn}>
+              <Header>
+                <NavBar
+                  loggedIn={loggedIn}
+                  userEmail={userEmail}
+                  onLogout={handleLogout}
+                />
+              </Header>
               <Main
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
@@ -171,9 +174,25 @@ const App = () => {
                 <Footer />
             </ProtectedRoute>
             <Route path="/sign-up">
+              <Header>
+                <NavBar
+                  loggedIn={loggedIn}
+                  userEmail={userEmail}
+                  onLogout={handleLogout}
+                  type="register"
+                />
+              </Header>
               <Register onRegister={handleRegister} />
             </Route>
             <Route path="/sign-in">
+              <Header>
+                <NavBar
+                  loggedIn={loggedIn}
+                  userEmail={userEmail}
+                  onLogout={handleLogout}
+                  type="login"
+                />
+              </Header>
               <Login onLogin={handleLogin} />
             </Route>
             <Route>
