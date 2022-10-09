@@ -24,17 +24,8 @@ const Register = ({ onRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { email, password } = state;
-
-    onRegister(email, password)
-      .catch(err => {
-        console.log(err);
-        setState({
-          ...state,
-          message: 'Что-то пошло не так!'
-        })
-      });
+    onRegister(email, password);
   };
 
   return (

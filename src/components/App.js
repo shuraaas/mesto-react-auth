@@ -20,7 +20,11 @@ const App = () => {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+  const [isInfoTooltipPopupData, setIsInfoTooltipPopupData] = useState({
+    isOpen: false,
+    title: '',
+    status: ''
+  });
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
@@ -64,7 +68,10 @@ const App = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setIsInfoTooltipPopupOpen(false);
+    setIsInfoTooltipPopupData({
+      ...isInfoTooltipPopupData,
+      isOpen: false,
+    });
     setSelectedCard(null);
   };
 
@@ -114,9 +121,23 @@ const App = () => {
   };
 
   const handleRegister = (email, password) => {
-    return auth.register(email, password).then(() => {
-      history.push('/sign-in');
-    });
+    return auth.register(email, password)
+      .then(() => {
+        setIsInfoTooltipPopupData({
+          isOpen: true,
+          title: 'Вы успешно зарегистрировались!',
+          status: true
+        });
+        history.push('/sign-in');
+      })
+      .catch(err => {
+        console.log(err);
+        setIsInfoTooltipPopupData({
+          isOpen: true,
+          title: 'Что-то пошло не так! Попробуйте ещё раз.',
+          status: false
+        });
+      });
   };
 
   const handleLogin = (email, password) => {
@@ -153,15 +174,15 @@ const App = () => {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
+          <Header>
+            <NavBar
+              loggedIn={loggedIn}
+              userEmail={userEmail}
+              onLogout={handleLogout}
+            />
+          </Header>
           <Switch>
             <ProtectedRoute path="/cards" loggedIn={loggedIn}>
-              <Header>
-                <NavBar
-                  loggedIn={loggedIn}
-                  userEmail={userEmail}
-                  onLogout={handleLogout}
-                />
-              </Header>
               <Main
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
@@ -174,25 +195,9 @@ const App = () => {
                 <Footer />
             </ProtectedRoute>
             <Route path="/sign-up">
-              <Header>
-                <NavBar
-                  loggedIn={loggedIn}
-                  userEmail={userEmail}
-                  onLogout={handleLogout}
-                  type="register"
-                />
-              </Header>
               <Register onRegister={handleRegister} />
             </Route>
             <Route path="/sign-in">
-              <Header>
-                <NavBar
-                  loggedIn={loggedIn}
-                  userEmail={userEmail}
-                  onLogout={handleLogout}
-                  type="login"
-                />
-              </Header>
               <Login onLogin={handleLogin} />
             </Route>
             <Route>
@@ -228,9 +233,8 @@ const App = () => {
           onClose={closeAllPopups}
         /> */}
         <InfoTooltip
-          isOpen={isInfoTooltipPopupOpen}
+          data={isInfoTooltipPopupData}
           name="info-tooltip"
-          title="Вы успешно зарегистрировались!"
           onClose={closeAllPopups}
         />
 
