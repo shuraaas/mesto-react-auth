@@ -10,6 +10,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddCardPopup from './AddCardPopup';
 import InfoTooltip from './InfoTooltip';
 import ImagePopup from './ImagePopup';
+import СonfirmationPopup from './СonfirmationPopup';
 import ProtectedRoute from './ProtectedRoute';
 import NavBar from './NavBar';
 import api from '../utils/api';
@@ -20,6 +21,7 @@ const App = () => {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
   const [isInfoTooltipPopupData, setIsInfoTooltipPopupData] = useState({
     isOpen: false,
     title: '',
@@ -28,6 +30,7 @@ const App = () => {
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [currentCard, setCurrentCard] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -60,6 +63,11 @@ const App = () => {
     setIsAddPlacePopupOpen(true);
   };
 
+  const handleDeleteCardClick = (cardId) => {
+    setCurrentCard(cardId);
+    setIsDeleteCardPopupOpen(true);
+  };
+
   const handleCardClick = (name, link) => {
     setSelectedCard({ name, link });
   };
@@ -68,6 +76,7 @@ const App = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsDeleteCardPopupOpen(false);
     setIsInfoTooltipPopupData({
       ...isInfoTooltipPopupData,
       isOpen: false,
@@ -112,10 +121,11 @@ const App = () => {
       .catch(err => console.error(err));
   };
 
-  const handleCardDelete = (cardId) => {
-    api.deleteCard(cardId)
+  const handleCardDelete = () => {
+    api.deleteCard(currentCard)
       .then(() => {
-        setCards((state) => state.filter(item => item._id !== cardId));
+        setCards((state) => state.filter(item => item._id !== currentCard));
+        setIsDeleteCardPopupOpen(false);
       })
       .catch(err => console.error(err));
   };
@@ -189,7 +199,8 @@ const App = () => {
                   onAddPlace={handleAddPlaceClick}
                   onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}
+                  // onCardDelete={handleCardDelete}
+                  onDeleteCardClick={handleDeleteCardClick}
                   cards={cards}
                 />
                 <Footer />
@@ -225,13 +236,12 @@ const App = () => {
           onClose={closeAllPopups}
           onAddCard={handleAddCardSubmit}
         />
-        {/* <PopupWithForm
-          title="Вы уверены?"
-          name="delete-card"
-          buttonText="Да"
-          isOpen=""
+        <СonfirmationPopup
+          isOpen={isDeleteCardPopupOpen}
           onClose={closeAllPopups}
-        /> */}
+          // onDeleteCardClick={handleDeleteCardClick}
+          onCardDelete={handleCardDelete}
+        />
         <InfoTooltip
           data={isInfoTooltipPopupData}
           name="info-tooltip"

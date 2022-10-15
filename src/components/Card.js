@@ -9,7 +9,8 @@ const Card = ({
   likes,
   onCardClick,
   onCardLike,
-  onCardDelete
+  onCardDelete,
+  onDeleteCardClick
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = owner._id === currentUser._id;
@@ -30,7 +31,7 @@ const Card = ({
   };
 
   const handleDeleteClick = () => {
-    onCardDelete(_id);
+    onDeleteCardClick(_id);
   };
 
   return (
