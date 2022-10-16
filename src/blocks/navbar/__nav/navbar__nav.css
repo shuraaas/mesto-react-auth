@@ -6,3 +6,10 @@
   margin: 0;
   padding: 0;
 }
+
+@media (max-width: 550px) {
+  .navbar__nav {
+    flex-direction: column;
+    gap: 19px;
+  }
+}
