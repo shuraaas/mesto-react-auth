@@ -104,7 +104,7 @@ const App = () => {
 
   const handleAddCardSubmit = (data) => {
     api.setNewCard(data)
-    .then((newCard) => {
+      .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
@@ -159,7 +159,8 @@ const App = () => {
         setLoggedIn(true);
         setUserEmail(email);
         history.push('/cards');
-      });
+      })
+      .catch(err => console.error(err));
   };
 
   const handleLogout = () => {
@@ -177,7 +178,8 @@ const App = () => {
       setLoggedIn(true);
       setUserEmail(data.data.email);
       history.push("/cards");
-    });
+    })
+    .catch(err => console.error(err));
   };
 
   return (
