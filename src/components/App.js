@@ -201,7 +201,6 @@ const App = () => {
                   onAddPlace={handleAddPlaceClick}
                   onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
-                  // onCardDelete={handleCardDelete}
                   onDeleteCardClick={handleDeleteCardClick}
                   cards={cards}
                 />
@@ -241,7 +240,6 @@ const App = () => {
         <СonfirmationPopup
           isOpen={isDeleteCardPopupOpen}
           onClose={closeAllPopups}
-          // onDeleteCardClick={handleDeleteCardClick}
           onCardDelete={handleCardDelete}
         />
         <InfoTooltip
