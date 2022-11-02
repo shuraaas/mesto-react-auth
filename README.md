@@ -12,12 +12,27 @@
 * CSS
     * Flexbox
     * Grid Layout
+    * БЭМ Nested
 * JavaScript
-* React
-* БЭМ Nested
+* React.js
+    * CRA
+    * JSX
+    * React DOM
+    * React Router
 * Git
 * NPM
-* Create React App
+
+## Порядок работы с проектом:
+
+1. Клонировать проект:
+   `git clone https://github.com/shuraaas/mesto-react-auth.git`
+2. Установить зависимости:
+   `npm i`
+3. Запустить dev-server:
+   `npm start`. Проект откроется по
+   адресу: [http://localhost:3000](http://localhost:3000)
+4. Собрать проект:
+   `npm run build`
 
 ## Посмотреть страницу и макет:
 
